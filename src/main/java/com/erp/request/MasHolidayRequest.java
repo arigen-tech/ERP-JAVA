@@ -20,7 +20,7 @@ public class MasHolidayRequest {
     private Integer year;
 
     @NotNull(message = "Holiday date is required")
-    @FutureOrPresent(message = "Holiday date cannot be in the past")
+//    @FutureOrPresent(message = "Holiday date cannot be in the past")
     private LocalDate holidayDate;
 
     @NotBlank(message = "RH flag is required")

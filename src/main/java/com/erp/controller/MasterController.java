@@ -1,7 +1,9 @@
 package com.erp.controller;
 
+import com.erp.entity.MasStoreItemClass;
 import com.erp.request.*;
 
+import com.erp.response.ApiResponse;
 import com.erp.service.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -9,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @Tag(name = "MasterController", description = "Controller for handling All Master")
@@ -73,6 +77,9 @@ public class MasterController {
     private final MasItemCategoryService itemCategoryService;
 
     private final MasItemSubcategoryService subcategoryService;
+
+    private final MasStoreItemClassService masStoreItemClassService;
+
 
     //-------------------------------------------Mas Marital Status-----------------------------------------------------//
 
@@ -946,6 +953,31 @@ public class MasterController {
         return  ResponseEntity.ok(subcategoryService.getAll(flag));
     }
 
+
+    //------------------------------------------ Mas Store Item Class  -------------------------------------------------------------//
+
+
+    @PostMapping("/mas-store-item-class/create")
+    public ResponseEntity<ApiResponse<MasStoreItemClass>> add(@RequestBody MasStoreItemClassRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(masStoreItemClassService.create(request));
+    }
+    @PutMapping("/mas-store-item-class/update/{id}")
+    public ResponseEntity<ApiResponse<MasStoreItemClass>> update(@PathVariable Long id, @RequestBody MasStoreItemClassRequest request){
+        return  ResponseEntity.ok(masStoreItemClassService.updateById(id,request));
+    }
+    @PutMapping("/mas-store-item-class/update-status/{id}/{status}")
+    public ResponseEntity<ApiResponse<MasStoreItemClass>> updateStatus(@PathVariable Long id,@PathVariable String status){
+        return  ResponseEntity.ok(masStoreItemClassService.changeStatusById(id,status));
+    }
+    @GetMapping("/mas-store-item-class/getById/{id}")
+    public ResponseEntity<ApiResponse<MasStoreItemClass>> getById(@PathVariable Long id){
+        return  ResponseEntity.ok(masStoreItemClassService.getById(id));
+    }
+
+   @GetMapping("/mas-store-item-class/getAll/{flag}")
+  public ResponseEntity<ApiResponse<List<MasStoreItemClass>>> getAll(@PathVariable Integer flag){
+      return  ResponseEntity.ok(masStoreItemClassService.getAll(flag));
+  }
 
 
 }

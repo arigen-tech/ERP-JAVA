@@ -1,6 +1,8 @@
 package com.erp.controller;
 
+import com.erp.entity.MasGender;
 import com.erp.entity.MasStoreItemClass;
+import com.erp.entity.MasUserGroup;
 import com.erp.request.*;
 
 import com.erp.response.ApiResponse;
@@ -8,6 +10,7 @@ import com.erp.service.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -79,6 +82,11 @@ public class MasterController {
     private final MasItemSubcategoryService subcategoryService;
 
     private final MasStoreItemClassService masStoreItemClassService;
+
+    @Autowired
+    private MasUserGroupService masUserGroupService;
+    @Autowired
+    private MasGenderService masGenderService;
 
 
     //-------------------------------------------Mas Marital Status-----------------------------------------------------//
@@ -979,5 +987,51 @@ public class MasterController {
       return  ResponseEntity.ok(masStoreItemClassService.getAll(flag));
   }
 
+    //------------------------------------------ Mas User Group -------------------------------------------------------------//
 
+    @PostMapping("/mas-user-group/create")
+    public ResponseEntity<ApiResponse<MasUserGroup>> addUSer(@RequestBody MasUserGroupRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(masUserGroupService.create(request));
+    }
+    @PutMapping("/mas-user-group/update/{id}")
+    public ResponseEntity<ApiResponse<MasUserGroup>> updateUser(@PathVariable Long id, @RequestBody MasUserGroupRequest request){
+        return  ResponseEntity.ok(masUserGroupService.updateById(id,request));
+    }
+    @PutMapping("/mas-user-group/update-status/{id}/{status}")
+    public ResponseEntity<ApiResponse<MasUserGroup>> updateStatusUser(@PathVariable Long id,@PathVariable String status){
+        return  ResponseEntity.ok(masUserGroupService.changeStatusById(id,status));
+    }
+    @GetMapping("/mas-user-group/getById/{id}")
+    public ResponseEntity<ApiResponse<MasUserGroup>> getByIdUser(@PathVariable Long id){
+        return  ResponseEntity.ok(masUserGroupService.getById(id));
+    }
+
+    @GetMapping("/mas-user-group/getAll/{flag}")
+    public ResponseEntity<ApiResponse<List<MasUserGroup>>> getAllUser(@PathVariable Integer flag){
+        return  ResponseEntity.ok(masUserGroupService.getAll(flag));
+    }
+
+    //------------------------------------------ Mas Gender -------------------------------------------------------------//
+
+    @PostMapping("/mas-gender/create")
+    public ResponseEntity<ApiResponse<MasGender>> addGender(@RequestBody MasGenderRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(masGenderService.create(request));
+    }
+    @PutMapping("/mas-gender/update/{id}")
+    public ResponseEntity<ApiResponse<MasGender>> updateGender(@PathVariable Long id, @RequestBody  MasGenderRequest request){
+        return  ResponseEntity.ok(masGenderService.updateById(id,request));
+    }
+    @PutMapping("/mas-gender/update-status/{id}/{status}")
+    public ResponseEntity<ApiResponse<MasGender>> updateStatusGender(@PathVariable Long id,@PathVariable String status){
+        return  ResponseEntity.ok(masGenderService.changeStatusById(id,status));
+    }
+    @GetMapping("/mas-gender/getById/{id}")
+    public ResponseEntity<ApiResponse<MasGender>> getByIdGender(@PathVariable Long id){
+        return  ResponseEntity.ok(masGenderService.getById(id));
+    }
+
+    @GetMapping("/mas-gender/getAll/{flag}")
+    public ResponseEntity<ApiResponse<List<MasGender>>> getAllGender(@PathVariable Integer flag){
+        return  ResponseEntity.ok(masGenderService.getAll(flag));
+    }
 }
